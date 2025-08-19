@@ -13,31 +13,34 @@ public class CartItem {
     @DBRef
     private Product product;
     private long quantity;
-    @Override
-    public String toString() {
-        return "CartItem [id=" + id + ", product=" + product + ", quantity=" + quantity + "]";
-    }
+
     public CartItem(Product product, @Min(1) long quantity) {
         this.product = product;
         this.quantity = quantity;
     }
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
+
     public Product getProduct() {
         return product;
     }
+
     public void setProduct(Product product) {
         this.product = product;
     }
+
     public long getQuantity() {
         return quantity;
     }
+
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
-    
+
 }

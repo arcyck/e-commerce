@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ecommerce.model.CartItem;
 
 @Repository
-public interface CartItemRepository extends MongoRepository<CartItem,String>{}
+public interface CartItemRepository extends MongoRepository<CartItem, String> {
+
+}

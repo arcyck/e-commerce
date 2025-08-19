@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.dtos.CartItemDTO;
 import com.ecommerce.model.Cart;
 import com.ecommerce.model.CartItem;
 import com.ecommerce.model.Product;
@@ -17,32 +18,31 @@ import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.service.CartService;
 
 @Service
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
-    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository, ProductRepository productRepository) {
+    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository,
+            CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
-    public Cart addToCart(CartItem cartItem) {
-        Optional<Product> productOptional = productRepository.findById(cartItem.getProduct().getId());
-        logger.info(productOptional.toString());
-        if(!productOptional.isPresent()) {
-            logger.error("Cart item must have some sort of product. Returning null");
+    public Cart addToCart(CartItemDTO productCart) {
+        Optional<Product> productOptional = productRepository.findById(productCart.product().getId());
+        if (!productOptional.isPresent()) {
+            logger.error("Product must have a valid id.");
             return null;
         }
-        cartItem.setProduct(productOptional.get());
-        CartItem savedItem = cartItemRepository.save(cartItem);
-        double subTotal = calculateSubTotal(savedItem);
-        return cartRepository.save(new Cart(savedItem,subTotal)); 
+        CartItem cartItem = cartItemRepository.save(new CartItem(productOptional.get(), productCart.quantity()));
+        double subtotal = calculateSubTotal(cartItem);
+        return cartRepository.save(new Cart(cartItem, subtotal));
     }
 
     private double calculateSubTotal(CartItem cartItem) {
@@ -54,5 +54,16 @@ public class CartServiceImpl implements CartService{
     @Override
     public List<Cart> getCarts() {
         return cartRepository.findAll();
+    }
+
+    @Override
+    public void clearCart() {
+        cartRepository.findAll()
+                .stream()
+                .forEach(cart -> cartRepository.deleteById(cart.getId()));
+
+        cartItemRepository.findAll()
+                .stream()
+                .forEach(cartItem -> cartItemRepository.deleteById(cartItem.getId()));
     }
 }

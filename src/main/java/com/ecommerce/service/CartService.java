@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.dtos.CartItemDTO;
 import com.ecommerce.model.Cart;
-import com.ecommerce.model.CartItem;
 
 @Service
 public interface CartService {
-    Cart addToCart(CartItem cartItem);
+    Cart addToCart(CartItemDTO cartItem);
     List<Cart> getCarts();
+    void clearCart();
 }

@@ -3,6 +3,7 @@ package com.ecommerce.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecommerce.exceptions.ProductNotFoundException;
 import com.ecommerce.model.Product;
 import com.ecommerce.service.ProductService;
 
@@ -31,14 +32,18 @@ public class ProductController {
     }
     
     @GetMapping("/{catagory}")
-    public ResponseEntity<List<Product>> filterProducts(@Valid @PathVariable String catagory) {
+    public ResponseEntity<List<Product>> filterProductCatagory(@Valid @PathVariable String catagory) {
         return new ResponseEntity<List<Product>>(productService.filterCatagory(catagory),HttpStatus.OK);
     }
 
-    // @GetMapping("/test/{id}")
-    // public ResponseEntity<Product> getMethodName(@PathVariable String id) throws Exception {
-    //     Product product = productService.findProductById(id);
-    //     return new ResponseEntity<Product>(product,HttpStatus.OK);
-    // }
+    @GetMapping("/item/{id}")
+    public  ResponseEntity<Product> findProductById(@PathVariable String id) throws Exception {
+        try {
+            Product product = productService.findProductById(id);
+            return new ResponseEntity<Product>(product,HttpStatus.OK);
+        } catch (ProductNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     
 }

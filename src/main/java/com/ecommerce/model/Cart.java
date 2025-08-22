@@ -11,7 +11,6 @@ public class Cart {
     private String id;
     @NotEmpty
     private CartItem cartItems;
-    @NotEmpty
     private double subtotal;
 
     public Cart(CartItem cartItems, @NotEmpty double subtotal) {

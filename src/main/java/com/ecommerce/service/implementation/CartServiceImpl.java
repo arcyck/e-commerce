@@ -66,4 +66,23 @@ public class CartServiceImpl implements CartService {
                 .stream()
                 .forEach(cartItem -> cartItemRepository.deleteById(cartItem.getId()));
     }
+
+    @Override
+    public Cart updateCart(String id, long updatedQuantity) {
+        Optional<Cart> cartOptional = cartRepository.findById(id);
+        if(!cartOptional.isPresent()) {
+            return null;
+        }
+        Cart updatedCart = cartOptional.get();
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(updatedCart.getCartItem().getId());
+        if(!cartItemOptional.isPresent()) {
+            return null;
+        }
+        CartItem cartItem = cartItemOptional.get();
+        cartItem.setQuantity(updatedQuantity);
+        double updatedPrice = calculateSubTotal(cartItem);
+        updatedCart.setCartItem(cartItem);
+        updatedCart.setsubtotal(updatedPrice);
+        return cartRepository.save(updatedCart);
+    }
 }

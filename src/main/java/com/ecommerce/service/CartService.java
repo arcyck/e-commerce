@@ -12,4 +12,5 @@ public interface CartService {
     Cart addToCart(CartItemDTO cartItem);
     List<Cart> getCarts();
     void clearCart();
+    Cart updateCart(String id, long updatedQuantity);
 }

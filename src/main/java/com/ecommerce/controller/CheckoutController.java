@@ -8,6 +8,9 @@ import com.ecommerce.model.CustomerDetails;
 import com.ecommerce.service.CartService;
 import com.ecommerce.service.CheckoutService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +29,9 @@ public class CheckoutController {
     }
 
     @PostMapping("/purchase")
+    @Operation(summary = "Purchases all of the items in the cart when the user is logged in")
+    @ApiResponse(responseCode = "201", description = "Url shorten successfully")
+    @ApiResponse(responseCode = "500", description = "User is not logged in")
     public ResponseEntity<Checkout> purchaseItems(@AuthenticationPrincipal CustomerDetails customerDetails) {
         String currentName = customerDetails.getCustomer().getUsername();
         Checkout savedCart = checkoutService.purchaseCart(currentName);

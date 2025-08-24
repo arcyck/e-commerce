@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.dtos.CustomerInfoDTO;
 import com.ecommerce.service.implementation.CustomerDetailsService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,12 +27,15 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDetails> signUpUser(@Valid @RequestBody CustomerInfoDTO customerInfoDTO) {
+    @Operation(summary = "Signs up the user")
+    @ApiResponse(responseCode = "201", description = "User signed up successfully")
+    @ApiResponse(responseCode = "409", description = "User already exist")
+    public ResponseEntity<Void> signUpUser(@Valid @RequestBody CustomerInfoDTO customerInfoDTO) {
         UserDetails customerDetails = customerDetailsService.createUser(customerInfoDTO);
         if(customerDetails == null) {
-            return new ResponseEntity<UserDetails>(customerDetails,HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<UserDetails>(customerDetails,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
     
 }

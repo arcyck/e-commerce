@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.model.Checkout;
 import com.ecommerce.service.CustomerService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -24,6 +27,8 @@ public class CustomerController {
     }
     
     @GetMapping("/purchase-history")
+    @Operation(summary = "Shows the purchase history from the current authenticated user")
+    @ApiResponse(responseCode = "200", description = "Url shorten successfully")
     public ResponseEntity<List<Checkout>> getPurchaseHistory(Principal principal) {
         return new ResponseEntity<List<Checkout>>(customerService.purchaseHistory(),HttpStatus.OK);
     }

@@ -30,6 +30,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> filterCatagory(String catagory) {
+        if(productRepository.existsByCategory(catagory)) {
+            return null;
+        }
         return productRepository.findByCategory(catagory);
     }
 

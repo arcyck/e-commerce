@@ -39,7 +39,11 @@ public class ProductController {
     @Operation(summary = "Filter product by catagory")
     @ApiResponse(responseCode = "200", description = "Product by catagory found")
     public ResponseEntity<List<Product>> filterProductCatagory(@Valid @PathVariable String catagory) {
-        return new ResponseEntity<List<Product>>(productService.filterCatagory(catagory),HttpStatus.OK);
+        List<Product> catagoryList = productService.filterCatagory(catagory);
+        if(catagoryList == null) {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+        }
+        return new ResponseEntity<List<Product>>(catagoryList,HttpStatus.OK);
     }
 
     @GetMapping("/item/{id}")

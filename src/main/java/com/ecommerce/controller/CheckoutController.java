@@ -29,9 +29,9 @@ public class CheckoutController {
     }
 
     @PostMapping("/purchase")
-    @Operation(summary = "Purchases all of the items in the cart when the user is logged in")
-    @ApiResponse(responseCode = "201", description = "Url shorten successfully")
-    @ApiResponse(responseCode = "500", description = "User is not logged in")
+    @Operation(summary = "Purchase all of the products in the cart")
+    @ApiResponse(responseCode = "202", description = "Purchase is successful")
+    @ApiResponse(responseCode = "500", description = "Purcahse fauled")
     public ResponseEntity<Checkout> purchaseItems(@AuthenticationPrincipal CustomerDetails customerDetails) {
         String currentName = customerDetails.getCustomer().getUsername();
         Checkout savedCart = checkoutService.purchaseCart(currentName);

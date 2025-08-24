@@ -27,8 +27,8 @@ public class CustomerController {
     }
     
     @GetMapping("/purchase-history")
-    @Operation(summary = "Shows the purchase history from the current authenticated user")
-    @ApiResponse(responseCode = "200", description = "Url shorten successfully")
+    @Operation(summary = "Shows the purchase history from the current user")
+    @ApiResponse(responseCode = "200", description = "Purcahse history shown successfully")
     public ResponseEntity<List<Checkout>> getPurchaseHistory(Principal principal) {
         return new ResponseEntity<List<Checkout>>(customerService.purchaseHistory(),HttpStatus.OK);
     }

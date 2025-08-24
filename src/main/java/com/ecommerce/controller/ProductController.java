@@ -29,22 +29,22 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Lists all of the product")
-    @ApiResponse(responseCode = "200", description = "Url shorten successfully")
+    @Operation(summary = "Lists all of the products")
+    @ApiResponse(responseCode = "200", description = "Listing products shown successfully")
     public ResponseEntity<List<Product>> listAllProducts() {
         return new ResponseEntity<List<Product>>(productService.getAllProducts(),HttpStatus.OK);
     }
     
     @GetMapping("/{catagory}")
-    @Operation(summary = "Gets the all of the product by catagory")
-    @ApiResponse(responseCode = "200", description = "Url shorten successfully")
+    @Operation(summary = "Filter product by catagory")
+    @ApiResponse(responseCode = "200", description = "Product by catagory found")
     public ResponseEntity<List<Product>> filterProductCatagory(@Valid @PathVariable String catagory) {
         return new ResponseEntity<List<Product>>(productService.filterCatagory(catagory),HttpStatus.OK);
     }
 
     @GetMapping("/item/{id}")
-    @Operation(summary = "Finds product from id")
-    @ApiResponse(responseCode = "200", description = "Url shorten successfully")
+    @Operation(summary = "Find one produt by id")
+    @ApiResponse(responseCode = "200", description = "Product is found successfully")
     @ApiResponse(responseCode = "404", description = "Product not found")
     public  ResponseEntity<Product> findProductById(@PathVariable String id) throws Exception {
         try {

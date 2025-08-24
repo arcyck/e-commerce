@@ -36,7 +36,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/auth/**", "/api/products/**", "/api/carts/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/products/**", "/api/carts/**","/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sessionManagementConfig -> sessionManagementConfig
